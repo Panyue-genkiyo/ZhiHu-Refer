@@ -5,8 +5,6 @@
 <script lang="ts">
   import { defineComponent, computed, onMounted } from 'vue'
   import ColumnList from '@/components/ColumnList.vue'
-  import { ColumnProps } from '@/store';
-  import { testData } from '@/test/testData';
   import { useStore } from 'vuex'
   import { GlobalState } from '@/store'
   export default defineComponent({
