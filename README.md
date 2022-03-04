@@ -4,6 +4,6 @@
 
 ### 示例项目结果图片
 
-![](../../Downloads/zhihu-refrence.png)
-![](../../Downloads/detail.png)
-![](../../Downloads/login.png)
+![zhihu-refrence](https://user-images.githubusercontent.com/84338417/156725401-7f088e16-35d4-4a91-a06b-34c22036b7f5.png)
+![detail](https://user-images.githubusercontent.com/84338417/156725423-cca9476e-3972-4999-a670-1ff6b9e2feb1.png)
+![detail](https://user-images.githubusercontent.com/84338417/156725447-d449769f-e162-48da-8d6a-2caba53fa60d.png)
