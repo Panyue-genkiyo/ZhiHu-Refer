@@ -1,57 +1,82 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import axios from 'axios'
 import Home from '@/views/Home.vue'
 import Login from '@/views/Login.vue'
-import ColumnDetail from '@/views/ColumnDetail.vue'
 import Singup from '@/views/Singup.vue'
+import ColumnDetail from '@/views/ColumnDetail.vue'
+import CreatePost from '@/views/CreatePost.vue'
+import PostDetail from '@/views/PostDetail.vue'
 import store from '@/store'
-
-const routerHistory = createWebHistory();
+const routerHistory = createWebHistory()
 const router = createRouter({
   history: routerHistory,
-  routes:[
+  routes: [
     {
-      path:'/',
-      name:'home',
-      component:Home
+      path: '/',
+      name: 'home',
+      component: Home
     },
     {
-      path:'/login',
-      name:'login',
-      component:Login,
-      meta:{
-        redirectAlreadyLogin: true
-      }
+      path: '/login',
+      name: 'login',
+      component: Login,
+      meta: { redirectAlreadyLogin: true }
     },
     {
-      path:'/column/:id',
-      name:'column',
-      component:ColumnDetail,
+      path: '/signup',
+      name: 'signup',
+      component: Singup,
+      meta: { redirectAlreadyLogin: true }
     },
     {
       path: '/create',
-      name: 'createPost',
-      component: () => import('@/views/CreatePost.vue'),
-      meta: {
-        requiredLogin: true
-      }
+      name: 'create',
+      component: CreatePost,
+      meta: { requiredLogin: true }
     },
     {
-      path:'/signup',
-      name:'signup',
-      component: Singup,
+      path: '/column/:id',
+      name: 'column',
+      component: ColumnDetail
+    },
+    {
+      path: '/posts/:id',
+      name: 'post',
+      component: PostDetail
     }
   ]
-});
-
-
+})
 router.beforeEach((to, from, next) => {
-    if(to.meta.requiredLogin && !store.state.user.isLogin){
-      next('/login');
-    }else if(to.meta.redirectAlreadyLogin && store.state.user.isLogin){
-      next('/'); //已经login的再次访问login应该跳转到首页
-    }else{
+  const { user, token } = store.state
+  const { requiredLogin, redirectAlreadyLogin } = to.meta
+  if (!user.isLogin) {
+    if (token) {
+      axios.defaults.headers.common.Authorization = `Bearer ${token}`
+      store.dispatch('fetchCurrentUser').then(() => {
+        if (redirectAlreadyLogin) {
+          next('/')
+        } else {
+          next()
+        }
+      }).catch(e => {
+        console.error(e)
+        store.commit('logout')
+        next('login')
+      })
+    } else {
+      if (requiredLogin) {
+        next('login')
+      } else {
+        next()
+      }
+    }
+  } else {
+    if (redirectAlreadyLogin) {
+      next('/')
+    } else {
       next()
     }
+  }
 })
 
-export default router;
+export default router
