@@ -1,85 +1,80 @@
 <template>
-  <div class="register-container w-350 mx-auto">
-    <h4 class="my-4 text-center">登录</h4>
+  <div class="login-page mx-auto p-3 w-330">
+    <h5 class="my-4 text-center">登录到者也</h5>
     <validate-form @form-submit="onFormSubmit">
       <div class="mb-3">
-        <label class="form-label">邮箱</label>
+        <label class="form-label">邮箱地址</label>
         <validate-input
-          :rules="emailRules"
-          v-model="emailVal"
-          placeholder="请输入邮箱"
+          :rules="emailRules" v-model="emailVal"
+          placeholder="请输入邮箱地址"
           type="text"
-          ref="emailInputRef"
+          ref="inputRef"
         />
       </div>
-      <div class="form-group mb-3">
+      <div class="mb-3">
         <label class="form-label">密码</label>
         <validate-input
-          placeholder="请输入密码"
           type="password"
+          placeholder="请输入密码"
           :rules="passwordRules"
-          ref="passwordInputRef"
           v-model="passwordVal"
         />
       </div>
+      <template #submit>
+        <button type="submit" class="btn btn-primary btn-block btn-large">登录</button>
+      </template>
     </validate-form>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
-import { useRouter } from 'vue-router';
 import { useStore } from 'vuex'
-import ValidateForm from '@/components/ValidateForm.vue'
+import { useRouter } from 'vue-router'
 import ValidateInput, { RulesProp } from '@/components/ValidateInput.vue'
+import ValidateForm from '@/components/ValidateForm.vue'
 import createMessage from '@/utils/createMessage'
+
 export default defineComponent({
-  name: 'GlobalHeader',
-  components:{
-    ValidateForm,
-    ValidateInput
+  name: 'Login',
+  components: {
+    ValidateInput,
+    ValidateForm
   },
-  setup(){
-    const router = useRouter();
-    const store = useStore();
-    const emailInputRef = ref<any>();
-    const passwordInputRef = ref<any>();
-    const emailVal = ref('');
-    const passwordVal = ref('');
+  setup() {
+    const emailVal = ref('')
+    const router = useRouter()
+    const store = useStore()
     const emailRules: RulesProp = [
       { type: 'required', message: '电子邮箱地址不能为空' },
-      { type: 'email', message: '请输入正确的电子邮箱地址' }
-    ];
-    const passwordRules: RulesProp = [
-      { type: 'required', message: '密码不能为空' },
+      { type: 'email', message: '请输入正确的电子邮箱格式' }
     ]
-    const onFormSubmit = (res: boolean) => {
-      console.log('res',res);
-      if(res){
+    const passwordVal = ref('')
+    const passwordRules: RulesProp = [
+      { type: 'required', message: '密码不能为空' }
+    ]
+    const onFormSubmit = (result: boolean) => {
+      if (result) {
         const payload = {
           email: emailVal.value,
-          password:passwordVal.value
+          password: passwordVal.value
         }
-        store.dispatch('loginAndFetch', payload)
-             .then(() => {
-               //成功之后弹出框
-               createMessage('登录成功,两秒之后跳转首页', 'success');
-               setTimeout(() => {
-                 router.push('/');
-               }, 2000);
-             }).catch(e => {
-                console.log(e);
-             })
-       }
+        store.dispatch('loginAndFetch', payload).then(data => {
+          createMessage('登录成功 2秒后跳转首页', 'success')
+          setTimeout(() => {
+            router.push('/')
+          }, 2000)
+        }).catch(e => {
+          console.log(e)
+        })
+      }
     }
     return {
       emailRules,
-      passwordRules,
       emailVal,
       passwordVal,
-      onFormSubmit,
-      emailInputRef,
-      passwordInputRef,
+      passwordRules,
+      onFormSubmit
     }
   }
 })
