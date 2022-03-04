@@ -13,11 +13,13 @@
     </section>
     <h4 class="font-weight-bold text-center">发现精彩</h4>
     <column-list :list="list"></column-list>
-    <button
-      class="btn btn-outline-primary mt-2 mb-5 mx-auto btn-block w-25"
-      @click="loadMorePage" v-if="!isLastPage">
-      加载更多
-    </button>
+    <div style="display: flex;justify-content: center;align-items: center">
+      <button
+        class="btn btn-outline-primary mt-2 mb-5 btn-block w-25 mx-auto"
+        @click="loadMorePage" v-if="!isLastPage">
+        加载更多
+      </button>
+    </div>
   </div>
 </template>
 
