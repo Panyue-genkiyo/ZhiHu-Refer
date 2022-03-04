@@ -15,6 +15,7 @@ const createMessage = ( message: string, type: MessageType, timeout = 2000 ) => 
       messageInstance.unmount();
       document.body.removeChild(mountNode);
    }, timeout)
+  return true;//标识符
 }
 
 
