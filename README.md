@@ -1,24 +1,9 @@
-# zhihu-refrence
+# vue3+ts仿知乎设计
 
-## Project setup
-```
-yarn install
-```
+## 主要技术栈 vue3/typescript/vue-router/vuex/axios
 
-### Compiles and hot-reloads for development
-```
-yarn serve
-```
+### 示例项目结果图片
 
-### Compiles and minifies for production
-```
-yarn build
-```
-
-### Lints and fixes files
-```
-yarn lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+![](../../Downloads/zhihu-refrence.png)
+![](../../Downloads/detail.png)
+![](../../Downloads/login.png)
